@@ -27,19 +27,6 @@ export default function Component() {
   const [wishes, setWishes] = useState<string[]>([])
   const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null)
 
-  useEffect(() => {
-    console.log('Component mounted')
-    // 現有的 useEffect 邏輯
-  }, [])
-
-  console.log('Rendering component', { moonPhase, wishes, fact })  // 添加這行來記錄渲染狀態
-
-  // 如果頁面完全空白，可能是整個渲染被跳過了，所以我們添加一個錯誤邊界
-  if (!moonPhase && wishes.length === 0 && !fact) {
-    return <div>加載中...</div>
-  }
-
-
 
   const showToastMessage = (message: string, type: ToastType) => {
     setToast({ message, type })
@@ -110,7 +97,6 @@ export default function Component() {
         })
 
         const data = await response.json()
-        console.log('發送願望響應:', data)
         if (response.status === 200) {
           setWishSent(true)
           setWish('')

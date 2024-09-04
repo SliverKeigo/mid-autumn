@@ -5183,12 +5183,18 @@ export default async function handler(req: any, res: any) {
 
     // 使用環境變量中的違禁詞列表
     const containsBannedWord = BANNED_WORDS.some((word: string) => wish.includes(word));
-
+    console.log(containsBannedWord);
+    
     if (!containsBannedWord) {
       const wishes = await kv.get('wishes') || [];
+      console.log(wishes);
+      
       if (Array.isArray(wishes)) {
         wishes.push(wish);
+        console.log("1",wishes);
+        
         await kv.set('wishes', wishes);
+        console.log("2",wishes);
         res.status(200).json({ code: 200, message: '願望添加成功' });
       } else {
         res.status(500).json({ code: 500, message: '服務器錯誤：無法獲取願望列表' });

@@ -71,25 +71,31 @@ export default function Component() {
 
   const sendWish = async () => {
     if (wish.trim()) {
-      const response = await fetch('/api/wishes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ wish: wish.trim() }),
-      })
+      try {
+        const response = await fetch('/api/wishes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ wish: wish.trim() }),
+        })
 
-      if (response.ok) {
         const data = await response.json()
-        if (data.success) {
-          setWishSent(true)
-          setWish('')
-          fetchWishes()  // 重新獲取願望列表
-          showToastMessage('您的願望已成功發送！', 'success')
+
+        if (response.ok) {
+          if (data.message === '願望添加成功') {
+            setWishSent(true)
+            setWish('')
+            fetchWishes()  // 重新獲取願望列表
+            showToastMessage('您的願望已成功發送！', 'success')
+          } else {
+            showToastMessage(data.message || '發送願望失敗，請稍後再試。', 'error')
+          }
         } else {
-          showToastMessage(data.message || '發送願望失敗，請稍後再試。', 'error')
+          showToastMessage(data.message || '發送願望時出現錯誤，請稍後再試。', 'error')
         }
-      } else {
+      } catch (error) {
+        console.error('發送願望時出錯:', error)
         showToastMessage('發送願望時出現錯誤，請稍後再試。', 'error')
       }
     }

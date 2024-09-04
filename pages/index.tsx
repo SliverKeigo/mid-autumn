@@ -273,7 +273,7 @@ export default function Component() {
             <p className="mt-4 sm:mt-6 md:mt-8 text-base sm:text-lg md:text-xl text-center px-4 sm:px-6 md:px-8">願所有打工人都能品嚐到甜美的月餅，欣賞到皎潔的明月！</p>
           </div>
         </div>
-        {toast && <Toast message={toast.message} type={toast.type} />}
+        {toast && <Toast message={toast.message} type={toast.type === 'success' ? 'success' : 'error'} />}
 
         <style jsx>{`
         @keyframes float {

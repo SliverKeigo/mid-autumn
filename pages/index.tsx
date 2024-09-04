@@ -57,10 +57,10 @@ export default function Component() {
       const data = await response.json()
       console.log("Data",data);
       
-      if (data.code != 200) {
+      if (response.status != 200) {
         throw new Error('獲取願望失敗')
       }
-      setWishes(data.data)
+      setWishes(data)
     } catch (error) {
       console.error('獲取願望時出錯:', error)
     }
@@ -93,7 +93,7 @@ export default function Component() {
 
         const data = await response.json()
         console.log('發送願望響應:', data)
-        if (data.code === 200) {
+        if (response.status === 200) {
           setWishSent(true)
           setWish('')
           fetchWishes()  // 重新獲取願望列表
@@ -117,8 +117,7 @@ export default function Component() {
         },
         body: JSON.stringify({ email: email.trim() }),
       })
-      const data = await response.json()
-      if (data.code === 200) {
+      if (response.status === 200) {
         setEmail('')
         showToastMessage('感謝您的訂閱! Keigo 會在中秋節當天給您發送祝福郵件。', 'success')
       } else {

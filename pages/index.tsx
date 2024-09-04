@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Clock, Coffee, Mail, Moon, Music, Send } from 'lucide-react'
 import Toast from '@/pages/components/Toast';
 import { ToastType } from '@/types/ToastType';
+import { log } from 'console';
 
 const midAutumnFacts = [
   "中秋節是東亞地區重要的傳統節日之一。",
@@ -52,7 +53,10 @@ export default function Component() {
   const fetchWishes = async () => {
     try {
       const response = await fetch('/api/wishes')
+      console.log("res",response)
       const data = await response.json()
+      console.log("Data",data);
+      
       if (data.code != 200) {
         throw new Error('獲取願望失敗')
       }

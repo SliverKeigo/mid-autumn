@@ -32,40 +32,15 @@ export default async function handler(req: any, res: any) {
     }
   } else if (req.method === 'GET') {
     try {
-      console.log('開始處理 GET 請求');
       const wishes = await kv.get('wishes');
-      console.log('從 KV 獲取的願望:', wishes);
-
-      if (!wishes) {
-        console.log('沒有找到願望，返回空數組');
-        return res.status(200).json({ code: 200, data: [] });
+      if (!wishes || !Array.isArray(wishes)) {
+        res.status(200).json([]);
+      } else {
+        res.status(200).json(wishes);
       }
-
-      if (typeof wishes === 'string') {
-        console.error('從 KV 存儲獲取的願望是字符串:', wishes);
-        try {
-          const parsedWishes = JSON.parse(wishes);
-          if (Array.isArray(parsedWishes)) {
-            console.log('成功解析願望列表，數量:', parsedWishes.length);
-            return res.status(200).json({ code: 200, data: parsedWishes });
-          }
-        } catch (parseError) {
-          console.error('解析願望字符串時出錯:', parseError);
-        }
-        return res.status(200).json({ code: 200, data: [] });
-      }
-
-      if (!Array.isArray(wishes)) {
-        console.error('從 KV 存儲獲取的願望不是數組:', wishes);
-        return res.status(200).json({ code: 200, data: [] });
-      }
-
-      console.log('成功獲取願望列表，數量:', wishes.length);
-      return res.status(200).json({ code: 200, data: wishes });
-
     } catch (error) {
       console.error('獲取願望時出錯:', error);
-      return res.status(500).json({ code: 500, message: '服務器錯誤：無法獲取願望列表', error: String(error) });
+      res.status(500).json({ message: '服務器錯誤：無法獲取願望列表' });
     }
   } else {
     console.log('不支持的方法:', req.method);

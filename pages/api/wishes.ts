@@ -2,7 +2,8 @@ import fs from 'fs';
 import path from 'path';
 
 export default function handler(req: any, res: any) {
-  if (req.method === 'POST') {
+  console.log(req)
+  if (req.method == 'POST') {
     const wish = req.body.wish;
     const bannedWords = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'bannedWords.json'), 'utf8'));
 
@@ -17,7 +18,7 @@ export default function handler(req: any, res: any) {
     } else {
       res.status(400).json({ message: 'Wish contains inappropriate content' });
     }
-  } else if (req.method === 'GET') {
+  } else if (req.method == 'GET') {
     const wishes = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'wishes.json'), 'utf8'));
     res.status(200).json(wishes);
   } else {

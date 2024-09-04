@@ -32,19 +32,26 @@ export default async function handler(req: any, res: any) {
     }
   } else if (req.method === 'GET') {
     try {
+      console.log('開始處理 GET 請求');
       const wishes = await kv.get('wishes');
+      console.log('從 KV 獲取的願望:', wishes);
+
       if (!wishes) {
-        res.status(200).json({ code: 200, data: [] });
-      } else if (Array.isArray(wishes)) {
-        console.log('獲取的願望列表:', wishes);
-        res.status(200).json(wishes);
-      } else {
-        console.error('從 KV 存儲獲取的願望不是數組:', wishes);
-        res.status(200).json([]); // 返回空數組作為安全的默認值
+        console.log('沒有找到願望，返回空數組');
+        return res.status(200).json({ code: 200, data: [] });
       }
+
+      if (!Array.isArray(wishes)) {
+        console.error('從 KV 存儲獲取的願望不是數組:', wishes);
+        return res.status(200).json({ code: 200, data: [] });
+      }
+
+      console.log('成功獲取願望列表，數量:', wishes.length);
+      return res.status(200).json({ code: 200, data: wishes });
+
     } catch (error) {
       console.error('獲取願望時出錯:', error);
-      res.status(500).json({ code: 500, message: '服務器錯誤：無法獲取願望列表' });
+      return res.status(500).json({ code: 500, message: '服務器錯誤：無法獲取願望列表', error: error.message });
     }
   } else {
     console.log('不支持的方法:', req.method);

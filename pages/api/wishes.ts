@@ -51,7 +51,7 @@ export default async function handler(req: any, res: any) {
 
     } catch (error) {
       console.error('獲取願望時出錯:', error);
-      return res.status(500).json({ code: 500, message: '服務器錯誤：無法獲取願望列表', error: error.message });
+      return res.status(500).json({ code: 500, message: '服務器錯誤：無法獲取願望列表', error: error });
     }
   } else {
     console.log('不支持的方法:', req.method);

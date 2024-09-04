@@ -1,27 +1,30 @@
-import fs from 'fs';
-import path from 'path';
+import { kv } from '@vercel/kv';
 
-export default function handler(req: any, res: any) {
-  console.log(req)
-  if (req.method == 'POST') {
+const BANNED_WORDS = process.env.BANNED_WORDS ? JSON.parse(process.env.BANNED_WORDS) : [];
+
+export default async function handler(req: any, res: any) {
+  if (req.method === 'POST') {
     const wish = req.body.wish;
-    const bannedWords = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'bannedWords.json'), 'utf8'));
 
-    // 簡單的違禁詞檢查
-    const containsBannedWord = bannedWords.some((word: string) => wish.includes(word));
+    // 使用環境變量中的違禁詞列表
+    const containsBannedWord = BANNED_WORDS.some((word: string) => wish.includes(word));
 
     if (!containsBannedWord) {
-      const wishes = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'wishes.json'), 'utf8'));
-      wishes.push(wish);
-      fs.writeFileSync(path.join(process.cwd(), 'wishes.json'), JSON.stringify(wishes));
-      res.status(200).json({ message: 'Wish added successfully' });
+      const wishes = await kv.get('wishes') || [];
+      if (Array.isArray(wishes)) {
+        wishes.push(wish);
+        await kv.set('wishes', wishes);
+        res.status(200).json({ message: '願望添加成功' });
+      } else {
+        res.status(500).json({ message: '服務器錯誤：無法獲取願望列表' });
+      }
     } else {
-      res.status(400).json({ message: 'Wish contains inappropriate content' });
+      res.status(400).json({ message: '願望包含不適當的內容' });
     }
-  } else if (req.method == 'GET') {
-    const wishes = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'wishes.json'), 'utf8'));
+  } else if (req.method === 'GET') {
+    const wishes = await kv.get('wishes') || [];
     res.status(200).json(wishes);
   } else {
-    res.status(405).json({ message: 'Method not allowed' });
+    res.status(405).json({ message: '方法不允許' });
   }
 }

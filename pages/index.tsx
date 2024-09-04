@@ -80,12 +80,17 @@ export default function Component() {
       })
 
       if (response.ok) {
-        setWishSent(true)
-        setWish('')
-        fetchWishes()  // 重新獲取願望列表
-        showToastMessage('您的願望已成功發送！', 'success')
+        const data = await response.json()
+        if (data.success) {
+          setWishSent(true)
+          setWish('')
+          fetchWishes()  // 重新獲取願望列表
+          showToastMessage('您的願望已成功發送！', 'success')
+        } else {
+          showToastMessage(data.message || '發送願望失敗，請稍後再試。', 'error')
+        }
       } else {
-        showToastMessage('您的願望包含不適當的內容，請重新輸入。', 'error')
+        showToastMessage('發送願望時出現錯誤，請稍後再試。', 'error')
       }
     }
   }

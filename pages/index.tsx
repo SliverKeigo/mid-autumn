@@ -28,16 +28,6 @@ export default function Component() {
   const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null)
 
 
-  useEffect(() => {
-    console.log('Component mounted')
-    // 現有的 useEffect 邏輯
-  }, [])
-
-  console.log('Rendering component', { moonPhase, wishes, fact })  // 添加這行來記錄渲染狀態
-
-  if (!moonPhase && wishes.length === 0 && !fact) {
-    return <div>加載中...</div>
-  }
 
 
 
@@ -74,7 +64,11 @@ export default function Component() {
       if (response.status != 200) {
         throw new Error('獲取願望失敗')
       }
-      setWishes(data)
+      if(data.length > 0){
+        setWishes(data)
+      }else{
+        setWishes(["中秋節快樂🎉!"])
+      }
     } catch (error) {
       console.error('獲取願望時出錯:', error)
     }

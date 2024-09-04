@@ -81,7 +81,7 @@ export default function Component() {
         })
 
         const data = await response.json()
-
+        console.log('發送願望響應:', data)
         if (response.ok) {
           if (data.message === '願望添加成功') {
             setWishSent(true)

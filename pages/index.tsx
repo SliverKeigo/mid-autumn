@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Moon, Coffee, Clock, Music, Send, Mail } from 'lucide-react'
-import { Toast } from './components/Toast';
-import { ToastType } from './types/ToastType';
+import { Toast } from '@/pages/components/Toast';
+import { ToastType } from '@/types/ToastType';
 
 const midAutumnFacts = [
   "中秋節是東亞地區重要的傳統節日之一。",

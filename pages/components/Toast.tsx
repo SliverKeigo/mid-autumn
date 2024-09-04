@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { CheckCircle, AlertCircle, Info } from 'lucide-react'
-import { ToastType } from '../types/ToastType';
+import { ToastType } from '@/types/ToastType';
 
 interface ToastProps {
   message: string
   type: ToastType
 }
 
-export const Toast = ({ message, type }: ToastProps) => {
+const Toast = ({ message, type }: ToastProps) => {
   const bgColor = {
     success: 'bg-green-500',
     error: 'bg-red-500',
@@ -27,3 +27,5 @@ export const Toast = ({ message, type }: ToastProps) => {
     </div>
   )
 }
+
+export default Toast

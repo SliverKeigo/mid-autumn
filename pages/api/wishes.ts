@@ -4,6 +4,8 @@ const BANNED_WORDS = process.env.BANNED_WORDS ? JSON.parse(process.env.BANNED_WO
 // 判斷違禁詞是否為空
 if (BANNED_WORDS.length === 0) {
   console.error('違禁詞列表為空，請設置違禁詞列表');
+}else{
+  console.log('違禁詞列表:', BANNED_WORDS);
 }
 
 export default async function handler(req: any, res: any) {

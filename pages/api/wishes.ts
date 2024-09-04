@@ -33,10 +33,14 @@ export default async function handler(req: any, res: any) {
   } else if (req.method === 'GET') {
     try {
       const wishes = await kv.get('wishes');
-      if (!wishes || !Array.isArray(wishes)) {
-        res.status(200).json([]);
-      } else {
+      if (!wishes) {
+        res.status(200).json({ code: 200, data: [] });
+      } else if (Array.isArray(wishes)) {
+        console.log('獲取的願望列表:', wishes);
         res.status(200).json(wishes);
+      } else {
+        console.error('從 KV 存儲獲取的願望不是數組:', wishes);
+        res.status(200).json([]); // 返回空數組作為安全的默認值
       }
     } catch (error) {
       console.error('獲取願望時出錯:', error);

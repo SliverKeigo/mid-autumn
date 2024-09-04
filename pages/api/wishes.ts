@@ -21,12 +21,12 @@ export default async function handler(req: any, res: any) {
       if (Array.isArray(wishes)) {
         wishes.push(wish);
         await kv.set('wishes', wishes);
-        res.status(200).json({ message: '願望添加成功' });
+        res.status(200).json({ code: 200, message: '願望添加成功' });
       } else {
-        res.status(500).json({ message: '服務器錯誤：無法獲取願望列表' });
+        res.status(500).json({ code: 500, message: '服務器錯誤：無法獲取願望列表' });
       }
     } else {
-      res.status(400).json({ message: '願望包含不適當的內容' });
+      res.status(400).json({ code: 400, message: '願望包含不適當的內容' });
     }
   } else if (req.method === 'GET') {
     try {
@@ -38,10 +38,10 @@ export default async function handler(req: any, res: any) {
       }
     } catch (error) {
       console.error('獲取願望時出錯:', error);
-      res.status(500).json({ message: '服務器錯誤：無法獲取願望列表' });
+      res.status(500).json({ code: 500, message: '服務器錯誤：無法獲取願望列表' });
     }
   } else {
     console.log('不支持的方法:', req.method);
-    res.status(405).json({ message: '方法不允許' });
+    res.status(405).json({ code: 405, message: '方法不允許' });
   }
 }

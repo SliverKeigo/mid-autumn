@@ -52,10 +52,10 @@ export default function Component() {
   const fetchWishes = async () => {
     try {
       const response = await fetch('/api/wishes')
-      if (!response.ok) {
+      const data = await response.json()
+      if (data.code != 200) {
         throw new Error('獲取願望失敗')
       }
-      const data = await response.json()
       setWishes(data.data)
     } catch (error) {
       console.error('獲取願望時出錯:', error)

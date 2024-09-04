@@ -50,9 +50,16 @@ export default function Component() {
   }, [])
 
   const fetchWishes = async () => {
-    const response = await fetch('/api/wishes')
-    const data = await response.json()
-    setWishes(data)
+    try {
+      const response = await fetch('/api/wishes')
+      if (!response.ok) {
+        throw new Error('獲取願望失敗')
+      }
+      const data = await response.json()
+      setWishes(data.data)
+    } catch (error) {
+      console.error('獲取願望時出錯:', error)
+    }
   }
 
   const toggleMusic = () => {

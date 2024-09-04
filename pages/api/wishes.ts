@@ -1,6 +1,10 @@
 import { kv } from '@vercel/kv';
 
 const BANNED_WORDS = process.env.BANNED_WORDS ? JSON.parse(process.env.BANNED_WORDS) : [];
+// 判斷違禁詞是否為空
+if (BANNED_WORDS.length === 0) {
+  console.error('違禁詞列表為空，請設置違禁詞列表');
+}
 
 export default async function handler(req: any, res: any) {
   console.log('收到請求:', req.method, req.url);

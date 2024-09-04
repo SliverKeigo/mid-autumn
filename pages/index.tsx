@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react'
-import {Clock, Coffee, Mail, Moon, Music, Send} from 'lucide-react'
+import React, { useEffect, useState } from 'react'
+import { Clock, Coffee, Mail, Moon, Music, Send } from 'lucide-react'
 import Toast from '@/pages/components/Toast';
-import {ToastType} from '@/types/ToastType';
+import { ToastType } from '@/types/ToastType';
 
 const midAutumnFacts = [
   "中秋節是東亞地區重要的傳統節日之一。",
@@ -82,15 +82,11 @@ export default function Component() {
 
         const data = await response.json()
         console.log('發送願望響應:', data)
-        if (response.ok) {
-          if (data.message === '願望添加成功') {
-            setWishSent(true)
-            setWish('')
-            fetchWishes()  // 重新獲取願望列表
-            showToastMessage('您的願望已成功發送！', 'success')
-          } else {
-            showToastMessage(data.message || '發送願望失敗，請稍後再試。', 'error')
-          }
+        if (data.message === '願望添加成功') {
+          setWishSent(true)
+          setWish('')
+          fetchWishes()  // 重新獲取願望列表
+          showToastMessage('您的願望已成功發送！', 'success')
         } else {
           showToastMessage(data.message || '發送願望時出現錯誤，請稍後再試。', 'error')
         }
@@ -170,7 +166,7 @@ export default function Component() {
         <div className="z-10 flex flex-col items-center">
           <div className="relative w-40 h-40 sm:w-52 sm:h-52 md:w-64 md:h-64 bg-yellow-200 rounded-full mb-4 sm:mb-6 md:mb-8 overflow-hidden">
             <div className={`absolute inset-0 bg-yellow-100 rounded-full transition-all duration-1000 ease-in-out`}
-                 style={{clipPath: `inset(0 ${moonPhase * 12.5}% 0 0)`}}></div>
+              style={{ clipPath: `inset(0 ${moonPhase * 12.5}% 0 0)` }}></div>
             <div className="absolute top-1/4 left-1/4 w-6 h-6 sm:w-8 sm:h-8 bg-yellow-300 rounded-full"></div>
             <div className="absolute top-1/2 right-1/4 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-yellow-300 rounded-full"></div>
             <div className="absolute bottom-1/4 left-1/3 w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-yellow-300 rounded-full"></div>
